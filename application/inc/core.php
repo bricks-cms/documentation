@@ -9,7 +9,7 @@ function url($path = null) {
 }
 
 function asset($path = null) {
-    return getBaseUrl() . '/' . $path;
+    return trim(getBaseUrl(),'/') . '/' . $path;
 }
 
 function directory($path = null) {

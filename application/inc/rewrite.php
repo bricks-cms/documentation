@@ -24,6 +24,7 @@ function getRequestedPage()
     if (!$_requestedPage) {
         $routes = getRoutes();
         $route = str_replace([getBaseUrl(), '.html'], '', $_SERVER['REQUEST_URI']);
+        $route = empty($route) ? '/' : $route;
         $lang = trim(substr($route, 0, 4), '/');
         if (strlen($lang) != 2 && $route != '/') {
             $route = '/404';

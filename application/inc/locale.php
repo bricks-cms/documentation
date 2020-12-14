@@ -15,7 +15,8 @@ function getLocale()
 {
     global $_locale;
     if (!$_locale) {
-        if ('/' == str_replace(getBaseUrl(), '', $_SERVER['REQUEST_URI'])) {
+        $requestUrl = str_replace(getBaseUrl(), '', $_SERVER['REQUEST_URI']);
+        if (empty($requestUrl) || '/' == $requestUrl) {
             $_locale = 'de';
         } else {
             $allowedLanguages = getAllowedLanguages();
