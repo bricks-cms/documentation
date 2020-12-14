@@ -1,6 +1,7 @@
 <?php
 
     function buildPackagesOptions() {
+        return '';
 
         $curPackage = dirname(str_replace(
             [directory(), 'pages/packages/'],
@@ -40,13 +41,25 @@
 ?>
 
 <script type="text/javascript">
-    let redirectToPackage = function (optionValue) {
-        if ('' == optionValue) {
+
+    let redirectToPackage = function (package) {
+        if ('' == package) {
             location.href = '<?php echo url(); ?>';
         } else {
-            location.href = '<?php echo url('pages/packages'); ?>/' + optionValue + '/index.php';
+            location.href = '<?php echo url('packages'); ?>/' + package + '.html';
         }
     };
+
+    let redirectLanguage = function(lang) {
+        let route = '<?php echo route(); ?>';
+        let defaultLang = '<?php echo getLocale()::DEFAULT_LANGUAGE; ?>';
+        if (route == '/' && lang != defaultLang) {
+            location.href = location.href + lang;
+        } else {
+            location.href = location.href.replace('/<?php echo lang(); ?>/', '/' + lang + '/');
+        }
+    }
+
 </script>
 
 <aside class="right-column">
@@ -57,16 +70,16 @@
         </p>
     </div>
     <nav class="locale-nav">
-        <label><?php echo lang('Select your language'); ?>:</label><br />
-        <select name="locale" onchange="location.href = '<?php echo rtrim(getBaseUrl(), '/') . '/'; ?>' + this.value + '<?php echo (getRequestedPage() == '/home' ? '/' : getRequestedPage() . '.html'); ?>';">
-            <option value="de" <?php if(getLocale() == 'de') echo 'selected="selected"'; ?>>Deutsch</option>
-            <option value="en" <?php if(getLocale() == 'en') echo 'selected="selected"'; ?>>English</option>
+        <label><?php echo translate('Select your language'); ?>:</label><br />
+        <select name="locale" onchange="redirectLanguage(this.value)">
+            <option value="de" <?php if(lang() == 'de') echo 'selected="selected"'; ?>>Deutsch</option>
+            <option value="en" <?php if(lang() == 'en') echo 'selected="selected"'; ?>>English</option>
         </select>
     </nav>
     <nav class="package">
-        <label><?php echo lang('Select a package'); ?>:</label><br />
+        <label><?php echo translate('Select a package'); ?>:</label><br />
         <select name="package" onchange="redirectToPackage(this.value);">
-            <option value=""><?php echo lang('Currently no documented packages'); ?> ...</option>
+            <option value=""><?php echo translate('Currently no documented packages'); ?> ...</option>
             <?php echo buildPackagesOptions(); ?>
         </select>
     </nav>

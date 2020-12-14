@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo htmlspecialchars($title); ?></title>
-    <meta name="description" content="<?php echo htmlspecialchars($description); ?>" />
+    <title><?php echo escape(translate('page-title')); ?></title>
+    <meta name="description" content="<?php echo escape(translate('page-description')); ?>" />
     <link href="<?php echo asset('assets/fonts/catamaran/catamaran.css'); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo asset('assets/fonts/sourcesanspro/sourcesanspro.css'); ?>" rel="stylesheet" type="text/css" />
     <link href="<?php echo asset('assets/css/default.css'); ?>" rel="stylesheet" type="text/css" />
