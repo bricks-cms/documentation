@@ -58,7 +58,7 @@
     </div>
     <nav class="locale-nav">
         <label><?php echo lang('Select your language'); ?>:</label><br />
-        <select name="locale" onchange="location.href = '<?php echo getBaseUrl() . '/'; ?>' + this.value + '<?php echo (getRequestedPage() == '/home' ? '/' : getRequestedPage() . '.html'); ?>';">
+        <select name="locale" onchange="location.href = '<?php echo rtrim(getBaseUrl(), '/') . '/'; ?>' + this.value + '<?php echo (getRequestedPage() == '/home' ? '/' : getRequestedPage() . '.html'); ?>';">
             <option value="de" <?php if(getLocale() == 'de') echo 'selected="selected"'; ?>>Deutsch</option>
             <option value="en" <?php if(getLocale() == 'en') echo 'selected="selected"'; ?>>English</option>
         </select>
