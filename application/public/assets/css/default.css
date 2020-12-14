@@ -57,7 +57,7 @@ code {
     border: 1px solid #cac6ba;
     border-radius: 3px;
     background: #faf6ea;
-    padding: 6px;
+    padding: 6px 6px 0 6px;
     font-size: 0.9em;
     line-height: 1.2em;
     width:100%;
@@ -134,4 +134,10 @@ footer > ul > li:last-child:after,
 
 footer > ul {
     text-align:right;
+}
+
+/**** Customizations */
+
+.locale-nav {
+    margin-bottom:10px;
 }

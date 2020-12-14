@@ -4,15 +4,22 @@ $title = isset($title) ? $title : '';
 $description = isset($description) ? $description : 'Bricks Documentation';
 
 function url($path = null) {
-    return getBaseUrl() . $path;
+    $locale = getLocale() ?: 'de';
+    return getBaseUrl() . '/' . ($path ? $locale . '/' . $path : '');
+}
+
+function asset($path = null) {
+    return getBaseUrl() . '/' . $path;
 }
 
 function directory($path = null) {
     return dirname(__DIR__) . '/public/' . $path;
 }
 
+function appdir($path = null) {
+    return dirname(__DIR__) . '/' . $path;
+}
+
 function getBaseUrl() {
-    $path = str_replace(directory(), '', realpath($_SERVER['SCRIPT_FILENAME']));
-    $baseUrl = str_replace($path, '', $_SERVER['REQUEST_URI']);
-    return $baseUrl;
+    return dirname(str_replace($_SERVER['DOCUMENT_ROOT'], '', $_SERVER['SCRIPT_FILENAME']));
 }

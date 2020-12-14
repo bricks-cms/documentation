@@ -1,15 +1,28 @@
 <?php
 
-$title = 'Startpage';
-$description = 'Bricks';
-
 require "../inc/functions.php";
 
-require directory("header.php");
-require directory("navigation.php")
+$content = getRequestedPage();
+try {
+    $requestedContent = getRequestedContent();
+} catch(Exception $e) {
+    if (!if404() && in_array(getLocale(), getAllowedLanguages())) {
+        $content = '/501';
+        header('HTTP/1.0 501 Not Found');
+    } elseif(!if404()) {
+        $content = '/404';
+        header('HTTP/1.0 404 Not Found');
+    }
+}
+
+$title = $requestedContent['locale']['title'] ?? 'Bricks';
+$description = $requestedContent['locale']['description'] ?? 'Bricks Content Managment &amp; Framework - It&lsquo;s your Content Managment';
+
+require appdir("parts/header.php");
+require appdir("parts/navigation.php");
 
 ?>
 
-<h1>Hello World</h1>
+<?php echo render($content); ?>
 
-<?php require directory("footer.php"); ?>
+<?php require appdir("parts/footer.php"); ?>
