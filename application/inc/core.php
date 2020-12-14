@@ -5,7 +5,7 @@ $description = isset($description) ? $description : 'Bricks Documentation';
 
 function url($path = null) {
     $locale = getLocale() ?: 'de';
-    return getBaseUrl() . '/' . ($path ? $locale . '/' . $path : '');
+    return trim(getBaseUrl(), '/') . '/' . ($path ? $locale . '/' . $path : '');
 }
 
 function asset($path = null) {

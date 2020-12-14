@@ -15,12 +15,12 @@ function getLocale()
 {
     global $_locale;
     if (!$_locale) {
-        $requestUrl = str_replace(getBaseUrl(), '', $_SERVER['REQUEST_URI']);
+        $requestUrl = str_replace(getBaseUrl() == '/' ? '' : getBaseUrl(), '', $_SERVER['REQUEST_URI']);
         if (empty($requestUrl) || '/' == $requestUrl) {
             $_locale = 'de';
         } else {
             $allowedLanguages = getAllowedLanguages();
-            $lang = trim(substr(str_replace(getBaseUrl(), '', $_SERVER['REQUEST_URI']), 0, 4), '/');
+            $lang = trim(substr(str_replace(getBaseUrl() == '/' ? '' : getBaseUrl(), '', $_SERVER['REQUEST_URI']), 0, 4), '/');
             if (strlen($lang) == 2 && in_array($lang, $allowedLanguages)) {
                 $_locale = $lang;
             }

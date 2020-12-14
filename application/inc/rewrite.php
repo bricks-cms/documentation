@@ -23,7 +23,7 @@ function getRequestedPage()
     global $_requestedPage;
     if (!$_requestedPage) {
         $routes = getRoutes();
-        $route = str_replace([getBaseUrl(), '.html'], '', $_SERVER['REQUEST_URI']);
+        $route = str_replace([getBaseUrl() == '/' ? '' : getBaseUrl(), '.html'], '', $_SERVER['REQUEST_URI']);
         $route = empty($route) ? '/' : $route;
         $lang = trim(substr($route, 0, 4), '/');
         if (strlen($lang) != 2 && $route != '/') {
