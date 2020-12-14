@@ -1,0 +1,137 @@
+body {
+    background-color: #eae6da;
+    margin: 20px 0;
+    font: 12pt/1.5 catamaran,arial,helvetica,sans-serif;
+    font-weight:300;
+    color: #252525;
+}
+
+.main {
+    display: block;
+    margin: 0 auto 50px;
+    width: 90%;
+    max-width: 1260px;
+}
+
+a:link, a:visited {
+    color: #900;
+    font-style: italic;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration:underline;
+}
+
+h1 {
+    font-size: 1.3em;
+    padding: 10px 10px 0 10px;
+    margin: 10px 0;
+    color: #333;
+    font-weight:100;
+    border-bottom:1px solid #9a968a;
+}
+
+h2 {
+    font-size:1.1em;
+    color: #333;
+    font-weight:100;
+    padding: 0 10px;
+    border-bottom:1px solid #9a968a;
+    display:inline-block;
+    margin: 10px 0;
+}
+
+ul, li {
+    list-style-type: circle;
+    margin: 0 20px;
+    padding: 0;
+}
+
+li {
+    padding: 4px;
+}
+
+code {
+    display: inline-block;
+    border: 1px solid #cac6ba;
+    border-radius: 3px;
+    background: #faf6ea;
+    padding: 6px;
+    font-size: 0.9em;
+    line-height: 1.2em;
+    width:100%;
+    overflow-x:scroll;
+}
+
+strong {
+    font-family: "sourcesanspro", sans-serif;
+    font-weight:bold;
+}
+
+/**** LAYOUT */
+
+.content {
+    width:100%;
+    overflow: hidden;
+}
+
+.content > article > p {
+    margin-left:10px;
+}
+
+.right-column {
+    display:block;
+    width:280px;
+    margin:0 0 2% 2%;
+    overflow: hidden;
+    float:right;
+    background-color: #eae6da;
+    padding:50px 0 50px 80px;
+}
+
+.right-column .locale-nav {
+    margin-top:10px;
+    vertical-align: top;
+}
+
+footer hr {
+    border-color:#ddd;
+}
+
+/**** Navigation */
+
+.main-nav {
+    margin-top:20px;
+}
+
+footer > ul,
+.main-nav > ul {
+    margin:0;
+    padding:0;
+}
+
+footer > ul > li,
+.main-nav > ul > li {
+    list-style-type: none;
+    display:inline-block;
+    margin:0;
+    padding:0 0 0 10px;
+}
+
+footer > ul > li:after,
+.main-nav > ul > li:after {
+    content: '|';
+    margin-left:10px;
+}
+
+footer > ul > li:last-child:after,
+.main-nav > ul > li:last-child:after {
+    content: '';
+}
+
+/**** Footer */
+
+footer > ul {
+    text-align:right;
+}

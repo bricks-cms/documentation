@@ -1,0 +1,175 @@
+<h1>Rewrite & Extending Concepts</h1>
+<h2>Warum Ersetzen und Erweitern</h2>
+<p>
+    Der heutige Standard in der Entwicklung von PHP Anwendungen mit einer Anforderung wie Bricks
+    macht es erforderlich, dass die Anwendung flexibel erweitert werden kann und einen modulare Aufbau nachweist.
+</p>
+<p>
+    Hierdurch können Third-Party-Entwickler und der mit der Pflege beauftragte eingriffe in das System vornehmen
+    ohne dabei das originäre Programm abändern zu müssen. Das sorgt für Code Qualität und macht die Anwendung wartbar.
+</p>
+<p>
+    Bricks bietet vier Konzepte zur Lösung dieser Anforderung:
+</p>
+<ul>
+    <li>
+        <strong>Eventbasierte Erweiterung für spezifizierte Teile der Anwendung:</strong><br />
+        Events in Klassen bieten einen definierten Einsprungpunkt in den Programmfluss. Je nach Intention
+        des Events können so verschiedene Operationen ausgeführt werden.<br />
+        Der Vorteil bei eventbasierter Erweiterung ist, dass hier keine Klassen ersetzt werden müssen
+        um Funktionalität hinzuzufügen.
+    </li>
+    <li>
+        <strong>Klassen via Eventizr für alle gleichermaßen zugänglich machen:</strong><br />
+        Der Eventizr von Bricks verwendet kompilierte Klassen um Einsprungpunkte in die Anwendung zu ermöglichen
+        die für jeden auf der selben Klasse basieren und somit ebenfalls ohne die Klasse zu ersetzen Funktionalität
+        hinzufügen lässt. Das Konzept ist ähnlich dem AOP-Ansatz aus Java. Jede Methode einer Klasse erhält
+        hierbei <i>pre</i> und <i>post</i> Einstiegspunkte und ermöglichen es sogar, den gesamten Funktionskörper
+        zu ersetzen.
+    </li>
+    <li>
+        <strong>Ersetzen durch überschreiben:</strong><br />
+        Die Klasse wird hierbei vollständig ersetzt. Ein Beispiel wäre hier eine abstrakte Klasse
+        die von anderen Klassen vererbt wird. Diese Parent-Klassen lassen sich nicht erweitern, da
+        diese als Abhängigkeit anderer Klassen definiert sind.
+    </li>
+    <li>
+        <strong>Klassen erweitern:</strong><br />
+        Liegen Klassen ohne Vererbungshierarchie zur Verfügung, kann man diese mit eigenen Klassen
+        <i>extenden</i>. bricks-cmf/di-service bekommt diese Änderung mitgeteilt und weiß welche Klasse
+        zu verwenden ist.
+    </li>
+</ul>
+<p>Vor und Nachteile</p>
+<p>
+    Bei der eventbasierten Erweiterung hat man die wohl größten Vorteile darin, dass die Anpassungen überall
+    verfügbar sind und keine Vererbungshierarchien beachtet werden müssen.
+</p>
+<p>
+    Der Vorteil des Überschreibens liegt darin, dass man ohne Kompromisse Zugriff auf den Code hat. Bringt aber
+    auch den Nachteil mit, dass diese Anpassungen bekannt sein müssen wenn Konflikte auftreten und das der Code
+    bei Änderungen gepflegt werden muss.
+</p>
+<h2>Welche Möglichkeiten bietet mir Bricks</h2>
+<p>
+    Bricks und das Bricks CMS, genauer bricks-cms/skeleton bieten vordefinierte Möglichkeiten um das System zu erweitern.<br />
+    Zum einen gibt es eine spezielle Verzeichnisstruktur die es ermöglicht Klassen einfach zu ersetzen und zum anderen
+    bietet es die Möglichkeit jede Klasse mit Events auszustatten.
+</p>
+<ul>
+    <li>
+        <strong>Das <i>custom</i>-Verzeichnis:</strong><br />
+        Unter Beachtung des Dateipfads kann jede beliebige Datei in das Verzeichnis abgelegt werden um so die betreffende
+        Klasse zu überschreiben.
+    </li>
+    <li>
+        <strong>Das <i>compile</i>-Verzeichnis:</strong><br />
+        Im <i>compile</i>-Verzeichnis werden in ähnlicher Weise Dateien abgelegt. Der Eventizr und der LazyLoader
+        kompilieren Ihre Klassen in dieses Verzeichnis und verwenden einen eigenen Namespace oder eine kopie der Klasse.<br />
+        Die überprüfung der MD5 Dateisummen hält das Verzeichnis automatisch auf dem aktuellen Stand.
+    </li>
+    <li>
+        <strong>Das <i>packages</i>-Verzeichnis:</strong><br />
+        Das <i>packages</i>-Verzeichnis dient dem ersetzen von Composer Paketen.
+    </li>
+    <li>
+        <strong>Klassen ersetzen zur Laufzeit via Aliases:</strong><br />
+        Der Bricks-Di-Service unterstütz das ersetzen von Klassen zur Laufzeit. Immer wenn die Di zur Erstellung von
+        Objekten verwendet wird, weiß diese welche Klassen zu verwenden sind.
+    </li>
+    <li>
+        <strong>Klassen ersetzen über den Autloader</strong><br />
+        Über den Composer Autoloader können Klassenpfade neu definiert werden um eine Klasse so Systemweit zu überschreiben.
+    </li>
+</ul>
+<h2>Eine Klasse via Di überschreiben</h2>
+<pre><code><![CDATA[<?php
+namespace MyNamespace;
+
+use BricksCmf\ConfigService\ConfigServiceInterface;
+use BricksCmf\DiService\DiServiceInterface;
+
+class MyClass
+{
+    /** @var BricksCmf\DiService\DiServiceInterface $di **/
+    protected $di;
+
+    public function __construct(ConfigServiceInterface $config, DiServiceInterface $di)
+    {
+        $this->di = $di;
+        $config->set('default.bricks/di.aliases.Class\\To\\Rewrite', 'MyNamespace\\MyRewriteClass');
+    }
+
+    public function getTheClassInstance()
+    {
+        return $this->di->get('Class\\To\\Rewrite');
+    }
+}
+
+$myObject = new MyClass;
+echo get_class($myObject->getTheClassInstance()); // returns MyNamespace\MyRewriteClass
+]]></code></pre>
+<h2>Eine Klasse für Events erweitern</h2>
+<pre><code><![CDATA[<?php
+namespace MyNamespace;
+
+use BricksCmf\EventizrService\EventizrServiceInterface;
+use BricksCmf\DiService\DiServiceInterface;
+
+class MyClass
+{
+    /** @var BricksCmf\DiService\DiServiceInterface $di **/
+    protected $di;
+
+    public function __construct(EventizrServiceInterface $eventizr, DiServiceInterface $di)
+    {
+        $this->di = $di;
+        $eventizr->eventize('Class\\To\\Rewrite');
+    }
+
+    public function getTheClassInstance()
+    {
+        return $this->di->get('Class\\To\\Rewrite');
+    }
+}
+
+$myObject = new MyClass;
+echo get_class($myObject->getTheClassInstance()); // returns BricksCompile\Eventizr\Class\To\Rewrite
+]]></code></pre>
+<p>
+    Jetzt ist es möglich sich via Event einzuhängen.
+</p>
+<pre><code><![CDATA[<?php
+    namespace MyNamespace;
+
+    use BricksCmf\EventManager\EventManagerInterface;
+    use BricksCmf\DiService\DiServiceInterface;
+
+    class MyClass
+    {
+
+        /** @var BricksCmf\DiService\DiServiceInterface $di **/
+        protected $di;
+
+        public function __construct(EventManagerInterface $eventManager, DiServiceInterface $di)
+        {
+            $this->di = $di;
+            $eventManager->addListener('Class\\To\\Rewrite::yourMethod.pre', function($event) {
+                echo 'got event ' . $event->getEventName();
+            });
+        }
+
+        public function createAndCallClass() : void
+        {
+            $classToRewriteObject = $this->di->get('Class\\To\\Rewrite');
+            $classToRewriteObject->yourMethod();
+        }
+
+    }
+
+    $myObject = new MyClass;
+    $myObject->createAndCallClass(); // will echo "got event Class\To\Rewrite::yourMethod.pre"
+]]></code></pre>
+<p>
+    Ziemlich einfach, oder?
+</p>

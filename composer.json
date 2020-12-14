@@ -1,0 +1,23 @@
+{
+  "name": "bricks-cms/documentation",
+  "type": "documentation",
+  "keywords": [
+    "bricks",
+    "framework",
+    "content managment",
+    "documentation"
+  ],
+  "description": "Bricks",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Sven Ullmann",
+      "email": "kontakt@sumedia-webdesign.de"
+    }
+  ],
+  "require": {
+  },
+  "require-dev": {
+  }
+}

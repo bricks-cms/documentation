@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bricks</title>
+    <meta name="description" content="Bricks"/>
+    <link href="../assets/fonts/catamaran/catamaran.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/default.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../assets/js/default.js"></script>
+
+    <script>
+        let adjustFrameContent = function (frame) {
+            frame.style.height = frame.contentWindow.document.body.scrollHeight + 'px';
+        }
+
+        let currentContentPage;
+
+        let loadContent = function (contentPage) {
+            currentContentPage = contentPage;
+            $('#content').attr('src', '../lang/' + Page.getLocale() + '/content/' + currentContentPage);
+        }
+
+        let redirectToPackage = function (optionValue) {
+            if ('' == optionValue) {
+                loadContent('home.html');
+            } else {
+                loadContent('pages/packages/' + optionValue + '/home.html');
+            }
+        };
+
+        let loadLocaleContent = function (locale) {
+            Page.setLocale(locale);
+            loadContent(currentContentPage);
+        }
+
+        $(document).ready(loadContent);
+
+    </script>
+
+</head>
+<body>
+
+<div class="main">
+    <header>
+        <a href="index.html"><img src="../assets/img/logo.png" style="max-width:250px;"/></a>
+    </header>
+    <nav class="main-nav">
+        <ul>
+            <li><a href="../home.html">Startseite</a></li>
+        </ul>
+    </nav>
+
+    <iframe id="content" frameborder="0" class="content" name="content" src="javascript:loadContent('home.html');"
+            onload="adjustFrameContent(this);"></iframe>
+    <script type="text/javascript">
+
+    </script>
+
+    <aside class="right-column">
+        <nav class="package">
+            <label>Select a package</label><br/>
+            <select name="package" onchange="redirectToPackage(this.value);">
+                <option value="">Please select a package ...</option>
+                <optgroup label="bricks-cms">
+                    <option value="bricks-cms/application">bricks-cms/application</option>
+                </optgroup>
+                <optgroup label="bricks-cmf">
+                    <option value="bricks-cmf/application">bricks-cmf/application</option>
+                    <option value="bricks-cmf/config-service">bricks-cmf/config-service</option>
+                    <option value="bricks-cmf/di-service">bricks-cmf/di-service</option>
+                    <option value="bricks-cmf/eventizr-service">bricks-cmf/eventizr-service</option>
+                    <option value="bricks-cmf/eventmanager">bricks-cmf/eventmanager</option>
+                    <option value="bricks-cmf/factory-service">bricks-cmf/factory-service</option>
+                    <option value="bricks-cmf/lazyloader-service">bricks-cmf/lazyloader-service</option>
+                    <option value="bricks-cmf/namespaced-service">bricks-cmf/namespaced-service</option>
+                </optgroup>
+                <optgroup label="bricks-framework">
+                    <option value="bricks-framework/alias">bricks-framework/alias</option>
+                    <option value="bricks-framework/application">bricks-framework/application</option>
+                    <option value="bricks-framework/arraykeyparser">bricks-framework/arraykeyparser</option>
+                    <option value="bricks-framework/bootstrap">bricks-framework/bootstrap</option>
+                    <option value="bricks-framework/cache" selected="selected">bricks-framework/cache</option>
+                    <option value="bricks-framework/config">bricks-framework/config</option>
+                    <option value="bricks-framework/container">bricks-framework/container</option>
+                    <option value="bricks-framework/di">bricks-framework/di</option>
+                    <option value="bricks-framework/environment">bricks-framework/environment</option>
+                    <option value="bricks-framework/event">bricks-framework/event</option>
+                    <option value="bricks-framework/eventizr">bricks-framework/eventizr</option>
+                    <option value="bricks-framework/exception">bricks-framework/exception</option>
+                    <option value="bricks-framework/factory">bricks-framework/factory</option>
+                    <option value="bricks-framework/lazyloader">bricks-framework/lazyloader</option>
+                    <option value="bricks-framework/namespaced">bricks-framework/namespaced</option>
+                    <option value="bricks-framework/priorityarraylist">bricks-framework/priorityarraylist</option>
+                    <option value="bricks-framework/priorityobjectlist">bricks-framework/priorityobjectlist</option>
+                    <option value="bricks-framework/servicelocator">bricks-framework/servicelocator</option>
+                </optgroup>
+            </select>
+        </nav>
+        <nav class="locale-nav">
+            <label>Select your language:</label><br/>
+            <select name="locale" onchange="loadLocaleContent(this.value);">
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+            </select>
+        </nav>
+    </aside>
+
+    <footer>
+        <hr/>
+        <ul>
+            <li><a href="imprint.html">Impressum</a></li>
+            <li><a href="datenschutz.html">Datenschutz</a></li>
+        </ul>
+    </footer>
+</div>
+</body>
+</html>
