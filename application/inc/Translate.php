@@ -9,6 +9,12 @@ class Translate
 
     public function __construct($lang, $route)
     {
+        if (strlen($route) == 1 || strlen($route) == 3) {
+            $route = '/home';
+        } else {
+            $route = substr($route, 3);
+        }
+
         $files = [
             dirname(__DIR__) . '/lang/' . $lang . '.php',
             dirname(__DIR__) . '/lang/' . $lang . '/routes/' . $route . '.php'

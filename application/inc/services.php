@@ -54,6 +54,7 @@ function getTranslate()
     if (!$_translate) {
         $locale = getLocale();
         $router = getRouter();
+
         $_translate = new Translate(
             $locale->getCurrentLanguage(),
             $router->getRoute()
